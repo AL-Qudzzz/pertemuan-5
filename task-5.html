@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Tugas Harian</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(180deg, #04fafd, 5%, #119dff, 50%, #030423);
+        min-height: 100vh;
+        margin: 0;
+      }
+      .task-container {
+        width: 90%;
+        max-width: 800px;
+        margin-top: 50px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #2b2d42; 
+        position: relative;
+      }
+      .task-title {
+        color: #f2f0e6; 
+        text-align: center;
+        margin: 0;
+      }
+      .task-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .task-input {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f2f0e6; 
+        color: #2b2d42; 
+      }
+      .task-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #ffaa00; 
+        color: white;
+        cursor: pointer;
+      }
+      .task-button:hover {
+        background-color: #e69500;
+      }
+      .task-item {
+        padding: 10px 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f2f0e6;
+        gap: 15px;
+        color: #2b2d42; 
+        margin-bottom: 10px;
+      }
+      .task-list {
+        margin-top: 20px;
+        max-height: 60vh;
+        overflow-y: visible;
+      }
+      .task-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .task-action-button {
+        padding: 5px 10px;
+        font-size: 14px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /*tombol edit*/
+      .edit-button {
+        background-color: #508bfc;
+        color: white;
+      }
+      .edit-button:hover {
+        background-color: #3c6fdc;
+      }
+
+      /*tombol delete*/
+      .delete-button {
+        background-color: #f07167; 
+        color: white;
+      }
+      .delete-button:hover {
+        background-color: #d95a58;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="task-container">
+      <h2 class="task-title">Daftar Tugas Harian</h2>
+      <div class="task-input-group">
+        <input
+          type="text"
+          id="inputTugasBaru"
+          class="task-input"
+          placeholder="Tambahkan tugas baru..."
+        />
+        <button id="tombolTambahTugas" class="task-button">Tambah</button>
+      </div>
+      <ul id="daftarTugas" class="task-list"></ul>
+    </div>
+
+    
+
+    <script>
+      const inputTugasBaru = document.getElementById("inputTugasBaru");
+      const daftarTugas = document.getElementById("daftarTugas");
+      const tombolTambahTugas = document.getElementById("tombolTambahTugas");
+
+      tombolTambahTugas.addEventListener("click", function () {
+        const teksTugas = inputTugasBaru.value.trim();
+
+        // Pindahkan pemeriksaan ini ke dalam event listener
+        if (teksTugas === "") {
+          alert("Tugas tidak boleh kosong!");
+          return;
+        }
+
+        // Jika teks tidak kosong, lanjutkan untuk menambahkan tugas
+        buatItemTugas(teksTugas);
+        inputTugasBaru.value = "";
+        inputTugasBaru.focus();
+      });
+
+      function buatItemTugas(teks) {
+        const itemTugas = document.createElement("li");
+        itemTugas.classList.add("task-item");
+
+        const deskripsiTugas = document.createElement("span");
+        deskripsiTugas.textContent = teks;
+
+        const taskActions = document.createElement("div");
+        taskActions.classList.add("task-actions");
+
+        const tombolEdit = document.createElement("button");
+        tombolEdit.classList.add("task-action-button", "edit-button");
+        tombolEdit.textContent = "Edit";
+        tombolEdit.onclick = () => editTugas(deskripsiTugas);
+
+        const tombolHapus = document.createElement("button");
+        tombolHapus.classList.add("task-action-button", "delete-button");
+        tombolHapus.textContent = "Hapus";
+        tombolHapus.onclick = () => itemTugas.remove();
+
+        taskActions.appendChild(tombolEdit);
+        taskActions.appendChild(tombolHapus);
+
+        itemTugas.appendChild(deskripsiTugas);
+        itemTugas.appendChild(taskActions);
+
+        daftarTugas.appendChild(itemTugas);
+      }
+
+      function editTugas(deskripsiTugas) {
+        const teksTugasBaru = prompt("Edit tugas:", deskripsiTugas.textContent);
+        if (teksTugasBaru) {
+          deskripsiTugas.textContent = teksTugasBaru;
+        }
+      }
+    </script>
+  </body>
+</html>
